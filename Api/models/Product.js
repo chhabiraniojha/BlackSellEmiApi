@@ -24,6 +24,10 @@ const Product=sequelize.define('product',{
     allowNull:false
   },
   imageURL:{
+    type:Sequelize.TEXT,
+    allowNull:false
+  },
+  availableColors:{
     type:Sequelize.STRING,
     allowNull:false
   },
@@ -36,28 +40,24 @@ const Product=sequelize.define('product',{
     allowNull:false
   },
   shortDescription:{
-    type:Sequelize.STRING,
+    type:Sequelize.TEXT,
     allowNull:false
   },
   longDescrption:{
-    type:Sequelize.STRING,
+    type:Sequelize.TEXT,
     allowNull:false
   },
   specification:{
-    type:Sequelize.STRING,
-    allowNull:false
-  },
-  rating:{
-    type:Sequelize.DOUBLE,
-    allowNull:true
-  },
-  reviews:{
     type:Sequelize.TEXT,
-    allowNull:true
+    allowNull:false
   },
   downPayment:{
     type:Sequelize.INTEGER,
     allowNull:false
+  },
+  interestFreeMonth:{
+      type:Sequelize.STRING,
+      allowNull:false
   },
   flag:{
     type:Sequelize.STRING,
