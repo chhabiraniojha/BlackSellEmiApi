@@ -20,7 +20,7 @@ app.use('/admin',productRoutes)
 sequelize.sync({force:true})
 .then(res=>{
     app.listen(3010)
-    console.log('connected At 3010 port');
+    
 }).catch(err=>{
     console.log(err)
 });
