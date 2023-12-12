@@ -27,10 +27,6 @@ const Product=sequelize.define('product',{
     type:Sequelize.TEXT,
     allowNull:false
   },
-  availableColors:{
-    type:Sequelize.STRING,
-    allowNull:false
-  },
   mrp:{
     type:Sequelize.STRING,
     allowNull:false
