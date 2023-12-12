@@ -55,6 +55,10 @@ const Product=sequelize.define('product',{
       type:Sequelize.STRING,
       allowNull:false
   },
+  totalAvailableMonthForEmi:{
+    type:Sequelize.STRING,
+    allowNull:false
+  },
   flag:{
     type:Sequelize.STRING,
     allowNull:false
