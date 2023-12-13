@@ -1,8 +1,11 @@
 const express=require('express');
-const Router=express.Router();
+const router=express.Router();
 const productController=require('../../controller/productController/Product')
 
-Router.post("/addproduct",productController.addProduct);
+router.post("/addproduct",productController.addProduct);
+router.get('/allproducts',productController.getAllProducts)
+router.get('/allproducts/:id',productController.getSingleProduct)
+router.delete('/allproducts/:id',productController.deleteSingleProduct)
 
 
-module.exports=Router;
+module.exports=router;
