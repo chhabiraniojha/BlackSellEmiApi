@@ -17,7 +17,7 @@ app.use(cors())
 app.use('/user',userRoutes)
 app.use('/admin',productRoutes)
 
-sequelize.sync({})
+sequelize.sync({force:true})
 .then(res=>{
     app.listen(3010)
     
