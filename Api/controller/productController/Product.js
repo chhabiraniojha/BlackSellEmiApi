@@ -1,4 +1,6 @@
+const Sequelize=require('sequelize')
 const product = require('../../models/Product');
+
 
 
 
@@ -21,6 +23,29 @@ exports.getAllProducts = async (req, res, next) => {
       res.json(error)
    }
 }
+
+exports.getFilteredProducts = async (req, res, next) => {
+   const filter=JSON.parse(req.query.filter);
+   const page = req.query.page;
+   const pageLimit = parseInt(req.query.limit);
+   console.log(page,pageLimit)
+   // res.json(JSON.parse(filter))
+   try {
+      const allProducts = await product.findAll({
+         where: filter,
+         order: Sequelize.literal('RAND()'),
+         offset: (page) * pageLimit,
+         limit: pageLimit,
+         
+     
+       })
+      res.status(200).json({ success: true, allProducts })
+   } catch (error) {
+      throw new Error(error)
+   }
+}
+
+
 
 exports.getSingleProduct = async (req, res, next) => {
    
