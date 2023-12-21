@@ -4,10 +4,13 @@ const productController=require('../../controller/productController/Product')
 
 
 router.get('/filteredproducts',productController.getFilteredProducts)
-router.post("/addproduct",productController.addProduct);
-router.get('/allproducts',productController.getAllProducts)
-router.get('/allproducts/:id',productController.getSingleProduct)
-router.delete('/allproducts/:id',productController.deleteSingleProduct)
+router.get('/products',productController.getProducts)
+
+// admin routes
+router.post("admin/addproduct",productController.addProduct);
+router.get('admin/allproducts',productController.getAllProducts)
+router.get('admin//allproducts/:id',productController.getSingleProduct)
+router.delete('admin/allproducts/:id',productController.deleteSingleProduct)
 
 
 module.exports=router;

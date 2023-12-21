@@ -1,4 +1,5 @@
 const Sequelize=require('sequelize')
+const { Op } = require('sequelize');
 const product = require('../../models/Product');
 
 
@@ -79,3 +80,106 @@ exports.deleteSingleProduct=async(req,res,next)=>{
       res.status(500).json({success:false,message:"unsuccess",error})
    }
 }
+
+
+
+
+
+// exports.getProducts=async(req,res)=>{
+//    res.json("hello");
+// }
+
+
+// controllers/productController.js
+
+
+const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals }) => {
+  const whereCondition = {};
+
+  if (minPrice && maxPrice) {
+    whereCondition.dp = { [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)] };
+  };
+
+  if (categories) {
+    const categoryArray = JSON.parse(categories);
+    if (Array.isArray(categoryArray) && categoryArray.length > 0) {
+      whereCondition.category = { [Op.in]: categoryArray };
+    }
+  }
+
+  if (brands) {
+    const brandArray = JSON.parse(brands);
+    if (Array.isArray(brandArray) && brandArray.length > 0) {
+      whereCondition.brand = { [Op.in]: brandArray };
+    }
+  }
+
+  if (downPayment) {
+    const downPaymentArray = JSON.parse(downPayment);
+    if (Array.isArray(downPaymentArray) && downPaymentArray.length > 0) {
+      whereCondition.downPayment = { [Op.in]: downPaymentArray.map(parseFloat) };
+    }
+  }
+  console.log(bestSelling,topDeals)
+  if (bestSelling==true) {
+    whereCondition.flag = "Best selling";
+  }
+  
+  if (topDeals==true) {
+    whereCondition.flag = "Top Deals";
+  }
+  // whereCondition.flag="Top Deals"
+  return whereCondition;
+};
+
+const buildOrderCondition = ({ sortBy, orderBy }) => {
+   if (sortBy && orderBy) {
+      return Sequelize.literal(`"${sortBy}" ${orderBy}`);
+    }
+    return null;
+};
+
+exports.getProducts = async (req, res) => {
+  try {
+    const { sortBy, orderBy } = req.query;
+    const page = req.query.page;
+    const pageLimit = parseInt(req.query.limit);
+    // Check if all filtering fields are empty
+    const allFiltersEmpty =
+      !req.query.minPrice &&
+      !req.query.maxPrice &&
+      (!req.query.categories || JSON.parse(req.query.categories).length === 0) &&
+      (!req.query.brands || JSON.parse(req.query.brands).length === 0) &&
+      (!req.query.downPayment || JSON.parse(req.query.downPayment).length === 0) &&
+      req.query.bestSelling === undefined|| req.query.bestSelling===false &&
+      req.query.topDeals === undefined|| req.query.topDeals===false;
+
+    const whereCondition = allFiltersEmpty
+      ? {} // If all filters are empty, return all products
+      : buildWhereCondition({
+          minPrice: req.query.minPrice,
+          maxPrice: req.query.maxPrice,
+          categories: req.query.categories,
+          brands: req.query.brands,
+          downPayment: req.query.downPayment,
+          bestSelling: req.query.bestSelling,
+          topDeals: req.query.topDeals,
+        });
+
+    const order = buildOrderCondition({ sortBy, orderBy });
+
+    console.log(whereCondition)
+    const products = await product.findAll({
+      where: whereCondition,
+      order:order,
+      offset: (page) * pageLimit,
+      limit: pageLimit,
+      logging: console.log,
+    });
+    // console.log(products[0]?.toString());
+    res.status(200).json({success:true,data:products});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error',errDesc:error });
+  }
+};
