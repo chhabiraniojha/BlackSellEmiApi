@@ -15,7 +15,7 @@ app.use(bodyParser.json({extended:false}));
 app.use(cors())
 
 app.use('/user',userRoutes)
-// app.use('/admin',productRoutes)
+app.use('/admin',productRoutes)
 app.use('/',productRoutes)
 
 sequelize.sync({})
