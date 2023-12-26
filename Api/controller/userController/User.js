@@ -25,7 +25,7 @@ exports.checkExistance =async (req, res, next) => {
         if(userDetails==null){
             return res.status(201).json({success:true,message:"user does not exists"});
         }else{
-            return res.status(200).json({success:true,message:"user exists",token:generateAccessToken(userDetails)});
+            return res.status(200).json({success:true,message:"user exists",token:generateAccessToken(userDetails),userDetails});
         }
         
     } catch (error) {
