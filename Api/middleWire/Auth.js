@@ -8,7 +8,12 @@ const Authenticate=async (req,res,next)=>{
         const {userId}=jwt.verify(token,process.env.JWT_SECRET_KEY)
         const user=await Users.findByPk(userId);
         req.user=user;
-        next()
+        if(user){
+         next()
+        }else{
+         return res.json("token failed or user does not exists")
+        }
+        
         
      } catch (error) {
         res.status(501).json({

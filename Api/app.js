@@ -2,8 +2,9 @@ const express =require('express');
 require('dotenv').config();
 const bodyParser=require('body-parser');
 const sequelize=require('./utill/database');
-const userModel=require('./models/User')
-const prodeutModel=require('./models/Product');
+const User=require('./models/User')
+const Prodeuct=require('./models/Product');
+const Address=require('./models/Address')
 const userRoutes=require('./routes/userRoutes/User');
 const productRoutes=require('./routes/productRoutes/Product')
 const cors=require('cors')
@@ -18,7 +19,12 @@ app.use('/user',userRoutes)
 // app.use('/admin',productRoutes)
 app.use('/',productRoutes)
 
-sequelize.sync({})
+
+User.hasMany(Address)
+Address.belongsTo(User)
+
+
+sequelize.sync()
 .then(res=>{
     app.listen(3010)
     
