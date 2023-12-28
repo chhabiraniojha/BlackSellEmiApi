@@ -11,7 +11,7 @@ const Authenticate=async (req,res,next)=>{
         if(user){
          next()
         }else{
-         return res.json("token failed or user does not exists")
+         return res.status(500).json({message:"token failed or user does not exists",success:false})
         }
         
         
