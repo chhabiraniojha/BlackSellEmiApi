@@ -24,7 +24,7 @@ const newPayment = async (req, res) => {
             merchantUserId: "MU933037302229373",
             name: name,
             amount: amount * 100,
-            redirectUrl: `http://localhost:3000/api/phonepay/status/${merchantTransactionId}?merchant=${merchantTransactionId}`,
+            redirectUrl: `http://15.206.185.111:3010/api/phonepay/status/${merchantTransactionId}?merchant=${merchantTransactionId}`,
             redirectMode: 'POST',
             mobileNumber: number,
             paymentInstrument: {
@@ -93,14 +93,12 @@ const checkStatus = async(req, res) => {
     // CHECK PAYMENT TATUS
     axios.request(options).then(async(response) => {
         if (response.data.success === true) {
-            // console.log("success")
-            // return console.log(response.data.success)
-            const url = `http://localhost:5173/`
+            const url = `http://localhost:5173/#/Success`
             return res.redirect(url)
         } else {
             console.log(response)
-        //     const url = `http://localhost:3000/failure`
-        //     return res.redirect(url)
+            const url = `http://localhost:5173/#/Error`
+            return res.redirect(url)
         }
     })
     .catch((error) => {
