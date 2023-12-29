@@ -7,6 +7,7 @@ const Prodeuct=require('./models/Product');
 const Address=require('./models/Address')
 const userRoutes=require('./routes/userRoutes/User');
 const productRoutes=require('./routes/productRoutes/Product')
+const phonepayRoute=require('./routes/phonepayRoutes/Phonepay')
 const cors=require('cors')
 
 
@@ -18,6 +19,7 @@ app.use(cors())
 app.use('/user',userRoutes)
 // app.use('/admin',productRoutes)
 app.use('/',productRoutes)
+app.use("/api/phonepay",phonepayRoute)
 
 
 User.hasMany(Address)
