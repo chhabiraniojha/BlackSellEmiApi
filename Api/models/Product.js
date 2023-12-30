@@ -63,6 +63,10 @@ const Product=sequelize.define('product',{
     type:Sequelize.STRING,
     allowNull:false
   },
+  varient:{
+    type:Sequelize.STRING,
+    allowNull:true
+  },
   createdBy:{
     type:Sequelize.STRING,
     allowNull:false
