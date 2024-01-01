@@ -1,5 +1,6 @@
 const User = require('../../models/User');
 const jwt=require('jsonwebtoken')
+const Order=require('../../models/Order')
 
 
 
@@ -32,3 +33,32 @@ exports.checkExistance =async (req, res, next) => {
         return res.status(500).json({success:false,message:"internal server error"})
     }
 }
+
+
+exports.getOrders=(req,res)=>{
+   try {
+     const userId=req.params.userId;
+     const orders=Order.findAll({
+        where:{
+            userId
+        }
+     })
+    return  res.status(200).json(orders)
+   } catch (error) {
+    return res.status(500).json(error)
+   }
+}
+
+exports.getSingleOrder=(req,res)=>{
+    try {
+      const id=req.params.orderId;
+      const orders=Order.findAll({
+         where:{
+             id
+         }
+      })
+     return  res.status(200).json(orders)
+    } catch (error) {
+     return res.status(500).json(error)
+    }
+ }

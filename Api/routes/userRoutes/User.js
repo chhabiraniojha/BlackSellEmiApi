@@ -18,5 +18,10 @@ router.get('/address',Authenticate,addressController.getAddress)
 router.delete('/address/:addressId',Authenticate,addressController.deleteAddress)
 router.patch('/address/:addressId',Authenticate,addressController.updateAddress)
 
+//user order route........
+
+router.get('/orders/:userId',userController.getOrders)
+router.get('/orders/singleorder/:orderId',userController.getSingleOrder)
+
 
 module.exports=router;
