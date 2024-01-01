@@ -11,6 +11,10 @@ const Order=sequelize.define('order',{
     allowNull:false,
     primaryKey:true
   },
+  productId:{
+    type:Sequelize.INTEGER,
+    allowNull:false
+  },
   color:{
     type:Sequelize.STRING,
     allowNull:false
@@ -19,6 +23,11 @@ const Order=sequelize.define('order',{
     type:Sequelize.STRING,
     allowNull:false
   },
+  perMonthEmi:{
+    type:Sequelize.STRING,
+    allowNull:false
+  },
+  
   status:{
     type:Sequelize.STRING,
     allowNull:false
