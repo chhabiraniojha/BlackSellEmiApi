@@ -35,24 +35,25 @@ exports.checkExistance =async (req, res, next) => {
 }
 
 
-exports.getOrders=(req,res)=>{
+exports.getOrders=async(req,res)=>{
    try {
      const userId=req.params.userId;
-     const orders=Order.findAll({
+     const orders=await Order.findAll({
         where:{
             userId
         }
      })
+     console.log(orders)
     return  res.status(200).json(orders)
    } catch (error) {
     return res.status(500).json(error)
    }
 }
 
-exports.getSingleOrder=(req,res)=>{
+exports.getSingleOrder=async(req,res)=>{
     try {
       const id=req.params.orderId;
-      const orders=Order.findAll({
+      const orders=await Order.findAll({
          where:{
              id
          }
