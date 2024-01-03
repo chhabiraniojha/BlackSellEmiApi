@@ -20,8 +20,9 @@ router.patch('/address/:addressId',Authenticate,addressController.updateAddress)
 
 //user order route........
 
-router.get('/orders/:userId',userController.getOrders)
-router.get('/orders/singleorder/:orderId',userController.getSingleOrder)
+router.get('/orders/:userId',userController.getOrders);
+router.get('/orders/singleorder/:orderId',userController.getSingleOrder);
+router.patch('/orders/cancel/:orderId',userController.cancleOrder)
 
 
 module.exports=router;

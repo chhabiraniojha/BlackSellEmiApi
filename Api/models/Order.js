@@ -27,7 +27,10 @@ const Order=sequelize.define('order',{
     type:Sequelize.STRING,
     allowNull:false
   },
-  
+  addressId:{
+    type:Sequelize.INTEGER,
+    allowNull:false
+  },
   status:{
     type:Sequelize.STRING,
     allowNull:false
