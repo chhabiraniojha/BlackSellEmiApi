@@ -1,5 +1,6 @@
 const crypto =  require('crypto');
 const axios = require('axios');
+const Order=require("../../models/Order")
 // const {salt_key, merchant_id} = require('./secret')
 let salt_key="099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
 let merchant_id="PGTESTPAYUAT"
@@ -16,17 +17,19 @@ const merchantTransactionId=generateTransactionId()
 
 const newPayment = async (req, res) => {
     try {
-        const {name,number,amount}=req.body;
+        // const {name,number,amount}=req.body;
         // const merchantTransactionId = req.body.transactionId;
+        const {downpayment}=req.body;
+        
         const data = {
             merchantId: merchant_id,
             merchantTransactionId: merchantTransactionId,
             merchantUserId: "MU933037302229373",
-            name: name,
-            amount: amount * 100,
-            redirectUrl: `http://15.206.185.111:3010/api/phonepay/status/${merchantTransactionId}?merchant=${merchantTransactionId}`,
+            // name: name,
+            amount: downpayment * 100,
+            redirectUrl: `http://15.206.185.111:3010/api/phonepay/status/${merchantTransactionId}?merchant=${merchantTransactionId}&orderDetails=${JSON.stringify(req.body)}`,
             redirectMode: 'POST',
-            mobileNumber: number,
+            // mobileNumber: number,
             paymentInstrument: {
                 type: 'PAY_PAGE'
             }
@@ -70,6 +73,8 @@ const newPayment = async (req, res) => {
 }
 
 const checkStatus = async(req, res) => {
+    const orderDetails=JSON.parse(req.query.orderDetails);
+    const {userId,productId,color,emiTreanure,emiPerMonth,addressId}=orderDetails;
     const merchantTransactionId = req.query.merchant;
     const merchantId = merchant_id
     // console.log(merchantId)
@@ -93,11 +98,20 @@ const checkStatus = async(req, res) => {
     // CHECK PAYMENT TATUS
     axios.request(options).then(async(response) => {
         if (response.data.success === true) {
-            const url = `http://localhost:5173/#/Success`
+            const order=await Order.create({
+                productId,
+                color,
+                emiTreanure,
+                perMonthEmi:emiPerMonth,
+                addressId,
+                status:"confirmed",
+                userId
+            })
+            const url = `http://localhost:5174/#/Success`
             return res.redirect(url)
         } else {
             console.log(response)
-            const url = `http://localhost:5173/#/Error`
+            const url = `http://localhost:5174/#/Error`
             return res.redirect(url)
         }
     })
