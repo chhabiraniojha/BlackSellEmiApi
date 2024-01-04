@@ -12,7 +12,7 @@ exports.signup = async (req, res, next) => {
     const { mobileNo, name, email, panNo, creditLimit } = req.body;
     try {
         const userDetails = await User.create({ mobileNo, name, email, panNo, creditLimit });
-        return res.status(200).json({ userDetails, message: "success loged in", token: generateAccessToken(newUser) })
+        return res.status(200).json({ userDetails, message: "success loged in", token: generateAccessToken(userDetails) })
 
     } catch (error) {
         return res.status(500).json({ message: "internal server error" })
