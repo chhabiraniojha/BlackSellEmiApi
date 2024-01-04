@@ -11,8 +11,8 @@ const generateAccessToken = (newUser) => {
 exports.signup = async (req, res, next) => {
     const { mobileNo, name, email, panNo, creditLimit } = req.body;
     try {
-        const newUser = await User.create({ mobileNo, name, email, panNo, creditLimit });
-        return res.status(200).json({ data: newUser, message: "success loged in", token: generateAccessToken(newUser) })
+        const userDetails = await User.create({ mobileNo, name, email, panNo, creditLimit });
+        return res.status(200).json({ userDetails, message: "success loged in", token: generateAccessToken(newUser) })
 
     } catch (error) {
         return res.status(500).json({ message: "internal server error" })
