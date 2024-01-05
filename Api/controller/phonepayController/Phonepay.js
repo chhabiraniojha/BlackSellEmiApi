@@ -1,6 +1,10 @@
 const crypto =  require('crypto');
 const axios = require('axios');
+const sequelize=require('../../utill/database')
+const User=require("../../models/User")
 const Order=require("../../models/Order")
+
+
 // const {salt_key, merchant_id} = require('./secret')
 let salt_key="099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
 let merchant_id="PGTESTPAYUAT"
@@ -73,8 +77,10 @@ const newPayment = async (req, res) => {
 }
 
 const checkStatus = async(req, res) => {
+    const t = await sequelize.transaction();
     const orderDetails=JSON.parse(req.query.orderDetails);
-    const {userId,productId,color,emiTreanure,emiPerMonth,addressId}=orderDetails;
+    const {userId,productId,color,emiTreanure,emiPerMonth,addressId,availableLimit,totalPrice}=orderDetails;
+    const newAvailableLimit=availableLimit-totalPrice;
     const merchantTransactionId = req.query.merchant;
     const merchantId = merchant_id
     // console.log(merchantId)
@@ -106,11 +112,20 @@ const checkStatus = async(req, res) => {
                 addressId,
                 status:"confirmed",
                 userId
-            })
+            },{ transaction: t })
+            await User.update({ availableLimit: newAvailableLimit }, {
+                where: {
+                  id: userId
+                },
+                transaction: t
+          
+              });
+              await t.commit();
             const url = `http://localhost:5174/#/Success`
             return res.redirect(url)
         } else {
-            console.log(response)
+            // console.log(response)
+            await t.rollback();
             const url = `http://localhost:5174/#/Error`
             return res.redirect(url)
         }
