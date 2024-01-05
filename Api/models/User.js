@@ -29,6 +29,10 @@ const User=sequelize.define('user',{
   creditLimit:{
     type:Sequelize.INTEGER,
     allowNull:false
+  },
+  availableLimit:{
+    type:Sequelize.INTEGER,
+    allowNull:false
   }
 });
 
