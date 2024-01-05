@@ -9,9 +9,9 @@ const generateAccessToken = (newUser) => {
 }
 
 exports.signup = async (req, res, next) => {
-    const { mobileNo, name, email, panNo, creditLimit } = req.body;
+    const { mobileNo, name, email, panNo, creditLimit,availableLimit } = req.body;
     try {
-        const userDetails = await User.create({ mobileNo, name, email, panNo, creditLimit });
+        const userDetails = await User.create({ mobileNo, name, email, panNo, creditLimit,availableLimit });
         return res.status(200).json({ userDetails, message: "success loged in", token: generateAccessToken(userDetails) })
 
     } catch (error) {
