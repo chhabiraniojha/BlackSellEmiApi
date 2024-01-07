@@ -35,7 +35,7 @@ exports.getFilteredProducts = async (req, res, next) => {
       const allProducts = await product.findAll({
          where: filter,
          order: Sequelize.literal('RAND()'),
-         offset: (page) * pageLimit,
+         offset: (page+1) * pageLimit,
          limit: pageLimit,
          
      
