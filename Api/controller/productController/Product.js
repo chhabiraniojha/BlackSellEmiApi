@@ -17,8 +17,8 @@ exports.searchProduct = async (req, res, next) => {
         ],
       },
     });
-
-   return res.status(200).json(results);
+   const result=JSON.stringify(results);
+   return res.status(200).json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error' });
