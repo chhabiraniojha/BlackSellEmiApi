@@ -11,6 +11,7 @@ router.post("/admin/addproduct",productController.addProduct);
 router.get('/admin/allproducts',productController.getAllProducts)
 router.get('/admin/allproducts/:id',productController.getSingleProduct)
 router.delete('/admin/allproducts/:id',productController.deleteSingleProduct)
-
+// search route
+router.get('/search',productController.searchProduct)
 
 module.exports=router;

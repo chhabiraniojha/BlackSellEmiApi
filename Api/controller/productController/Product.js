@@ -3,7 +3,28 @@ const { Op } = require('sequelize');
 const product = require('../../models/Product');
 
 
+exports.searchProduct = async (req, res, next) => {
+  // res.json(JSON.parse(req.query.search))
+  const query = JSON.parse(req.query.search);
+  try {
+    // Use Sequelize's `Op.iLike` for case-insensitive search on product names and descriptions
+    const results = await product.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${query}%` } },
+          { brand: { [Op.like]: `%${query}%` } },
+          // { shortDescription: { [Op.like]: `%${query}%` } },
+        ],
+      },
+    });
 
+   return res.status(200).json(results);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+}
 
 exports.addProduct = async (req, res, next) => {
    try {
