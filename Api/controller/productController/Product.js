@@ -16,6 +16,7 @@ exports.searchProduct = async (req, res, next) => {
           // { shortDescription: { [Op.like]: `%${query}%` } },
         ],
       },
+      limit: 10,
     });
    const result=JSON.stringify(results);
    return res.status(200).json(result);
