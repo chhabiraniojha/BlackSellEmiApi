@@ -115,8 +115,7 @@ exports.deleteSingleProduct=async(req,res,next)=>{
 // controllers/productController.js
 
 
-const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals,trending}) => {
-  console.log(trending)
+const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals }) => {
   const whereCondition = {};
 
   if (minPrice && maxPrice) {
@@ -143,17 +142,13 @@ const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayme
       whereCondition.downPayment = { [Op.in]: downPaymentArray.map(parseFloat) };
     }
   }
-  console.log(bestSelling,topDeals,trending)
-  if (bestSelling=="true") {
+  console.log(bestSelling,topDeals)
+  if (bestSelling==true) {
     whereCondition.flag = "Best selling";
   }
   
-  if (topDeals=="true") {
+  if (topDeals==true) {
     whereCondition.flag = "Top Deals";
-  }
-
-  if (trending=="true") {
-    whereCondition.flag = "trending";
   }
   // whereCondition.flag="Top Deals"
   return whereCondition;
@@ -168,7 +163,6 @@ const buildOrderCondition = ({ sortBy, orderBy }) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    console.log(req.query)
     const { sortBy, orderBy } = req.query;
     const page = req.query.page;
     const pageLimit = parseInt(req.query.limit);
@@ -180,8 +174,7 @@ exports.getProducts = async (req, res) => {
       (!req.query.brands || JSON.parse(req.query.brands).length === 0) &&
       (!req.query.downPayment || JSON.parse(req.query.downPayment).length === 0) &&
       req.query.bestSelling === undefined|| req.query.bestSelling===false &&
-      req.query.topDeals === undefined|| req.query.topDeals===false &&
-      req.query.trending === undefined|| req.query.trending===false;
+      req.query.topDeals === undefined|| req.query.topDeals===false;
 
     const whereCondition = allFiltersEmpty
       ? {} // If all filters are empty, return all products
@@ -193,7 +186,6 @@ exports.getProducts = async (req, res) => {
           downPayment: req.query.downPayment,
           bestSelling: req.query.bestSelling,
           topDeals: req.query.topDeals,
-          trending:req.query.trending
         });
 
     const order = buildOrderCondition({ sortBy, orderBy });
