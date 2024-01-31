@@ -150,6 +150,10 @@ const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayme
   if (topDeals==true) {
     whereCondition.flag = "Top Deals";
   }
+
+  if (trending==true) {
+    whereCondition.flag = "trending";
+  }
   // whereCondition.flag="Top Deals"
   return whereCondition;
 };
