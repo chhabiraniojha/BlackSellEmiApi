@@ -115,7 +115,7 @@ exports.deleteSingleProduct=async(req,res,next)=>{
 // controllers/productController.js
 
 
-const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals }) => {
+const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals,trending }) => {
   const whereCondition = {};
 
   if (minPrice && maxPrice) {
