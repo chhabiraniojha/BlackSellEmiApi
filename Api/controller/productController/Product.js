@@ -48,6 +48,7 @@ exports.getAllProducts = async (req, res, next) => {
 }
 
 exports.getFilteredProducts = async (req, res, next) => {
+  console.log(req.query.filter)
    const filter=JSON.parse(req.query.filter);
    const page = req.query.page;
    const pageLimit = parseInt(req.query.limit);
@@ -57,12 +58,13 @@ exports.getFilteredProducts = async (req, res, next) => {
       const allProducts = await product.findAll({
          where: filter,
          order: Sequelize.literal('RAND()'),
-         offset: (page+1) * pageLimit,
+         offset: (page) * pageLimit,
          limit: pageLimit,
          
      
        })
-      res.status(200).json({ success: true, allProducts })
+       console.log(allProducts)
+      return res.status(200).json({ success: true, allProducts })
    } catch (error) {
       throw new Error(error)
    }
