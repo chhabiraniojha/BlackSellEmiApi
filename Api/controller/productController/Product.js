@@ -115,7 +115,7 @@ exports.deleteSingleProduct=async(req,res,next)=>{
 // controllers/productController.js
 
 
-const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals }) => {
+const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayment, bestSelling, topDeals, trending }) => {
   const whereCondition = {};
 
   if (minPrice && maxPrice) {
@@ -143,12 +143,15 @@ const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayme
     }
   }
   console.log(bestSelling,topDeals)
-  if (bestSelling==true) {
+  if (bestSelling=="true") {
     whereCondition.flag = "Best selling";
   }
   
-  if (topDeals==true) {
+  if (topDeals=="true") {
     whereCondition.flag = "Top Deals";
+  }
+  if (trending=="true") {
+    whereCondition.flag = "trending";
   }
   // whereCondition.flag="Top Deals"
   return whereCondition;
@@ -174,7 +177,8 @@ exports.getProducts = async (req, res) => {
       (!req.query.brands || JSON.parse(req.query.brands).length === 0) &&
       (!req.query.downPayment || JSON.parse(req.query.downPayment).length === 0) &&
       req.query.bestSelling === undefined|| req.query.bestSelling===false &&
-      req.query.topDeals === undefined|| req.query.topDeals===false;
+      req.query.topDeals === undefined|| req.query.topDeals===false &&
+      req.query.trending === undefined|| req.query.trending===false;
 
     const whereCondition = allFiltersEmpty
       ? {} // If all filters are empty, return all products
@@ -186,6 +190,7 @@ exports.getProducts = async (req, res) => {
           downPayment: req.query.downPayment,
           bestSelling: req.query.bestSelling,
           topDeals: req.query.topDeals,
+          trending:req.query.trending
         });
 
     const order = buildOrderCondition({ sortBy, orderBy });

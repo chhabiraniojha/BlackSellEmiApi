@@ -32,7 +32,7 @@ Order.belongsTo(User)
 
 sequelize.sync()
 .then(res=>{
-    app.listen(3010)
+    app.listen(5000)
     
 }).catch(err=>{
     console.log(err)
