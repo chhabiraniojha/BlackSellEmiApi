@@ -35,13 +35,13 @@ const newPayment = async (req, res) => {
             "customer_name": "all in one",
             "customer_mobile": "9999999999",
             "customer_email": "customer@gmail.com",
-            "callback_url": `http://localhost:5000/api/phonepay/status/${merchantTransactionId}/${encodedParams}`
+            "callback_url": `https://api.egmi.in/api/phonepay/status/${merchantTransactionId}/${encodedParams}`
         };
         // console.log(data.callback_url)
         const response = await axios.post(`https://allapi.in/order/create`, data);
         // console.log(response)
         if(response.data.status==true){
-            return res.json(response.data.results.payment_url)
+            return res.status(200).json(response.data.results.payment_url)
         }else{
             console.log(response.data.status)
             return;
