@@ -48,11 +48,11 @@ exports.getAllProducts = async (req, res, next) => {
 }
 
 exports.getFilteredProducts = async (req, res, next) => {
-  console.log(req.query.filter)
+  // console.log(req.query.filter)
    const filter=JSON.parse(req.query.filter);
    const page = req.query.page;
    const pageLimit = parseInt(req.query.limit);
-   console.log(page,pageLimit)
+  //  console.log(page,pageLimit)
    // res.json(JSON.parse(filter))
    try {
       const allProducts = await product.findAll({
@@ -63,7 +63,7 @@ exports.getFilteredProducts = async (req, res, next) => {
          
      
        })
-       console.log(allProducts)
+      //  console.log(allProducts)
       return res.status(200).json({ success: true, allProducts })
    } catch (error) {
       throw new Error(error)
@@ -76,7 +76,7 @@ exports.getSingleProduct = async (req, res, next) => {
    
    try {
       const singleProduct = await product.findByPk(req.params.id);
-      console.log(singleProduct)
+      // console.log(singleProduct)
       if (singleProduct === null) {
          res.status(201).json({success:false,message:"product not found"});
       } else {
@@ -144,7 +144,7 @@ const buildWhereCondition = ({ minPrice, maxPrice, categories, brands, downPayme
       whereCondition.downPayment = { [Op.in]: downPaymentArray.map(parseFloat) };
     }
   }
-  console.log(bestSelling,topDeals)
+  // console.log(bestSelling,topDeals)
   if (bestSelling=="true") {
     whereCondition.flag = "Best selling";
   }
@@ -197,18 +197,17 @@ exports.getProducts = async (req, res) => {
 
     const order = buildOrderCondition({ sortBy, orderBy });
 
-    console.log(whereCondition)
+    // console.log(whereCondition)
     const products = await product.findAll({
       where: whereCondition,
       order:order,
       offset: (page) * pageLimit,
-      limit: pageLimit,
-      logging: console.log,
+      limit: pageLimit
     });
     // console.log(products[0]?.toString());
     res.status(200).json({success:true,data:products});
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: 'Internal Server Error',errDesc:error });
   }
 };
