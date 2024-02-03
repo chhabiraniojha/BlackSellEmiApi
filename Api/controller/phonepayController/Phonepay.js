@@ -17,11 +17,12 @@ function generateTransactionId() {
     const TransactionId = `${merchentPrefiex}${timeStamp}${randomNum}`
     return TransactionId
 }
-const merchantTransactionId = generateTransactionId()
-console.log(merchantTransactionId)
+
+// console.log(merchantTransactionId)
 
 const newPayment = async (req, res) => {
     try {
+        const merchantTransactionId = generateTransactionId()
         const { downpayment, productId } = req.body;
         let encodedParams = Object.entries(req.body).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
 
@@ -34,9 +35,9 @@ const newPayment = async (req, res) => {
             "customer_name": "all in one",
             "customer_mobile": "9999999999",
             "customer_email": "customer@gmail.com",
-            "callback_url": `https://api.egmi.in/api/phonepay/status/${merchantTransactionId}/${encodedParams}`
+            "callback_url": `http://localhost:5000/api/phonepay/status/${merchantTransactionId}/${encodedParams}`
         };
-        console.log(data.callback_url)
+        // console.log(data.callback_url)
         const response = await axios.post(`https://allapi.in/order/create`, data);
         // console.log(response)
         if(response.data.status==true){
@@ -65,7 +66,7 @@ const checkStatus = async (req, res) => {
     params.forEach((value, key) => {
         orderDetails[key] = value;
     });
-    console.log(orderDetails)
+    // console.log(orderDetails)
         const t = await sequelize.transaction();
     //     const orderDetails = JSON.parse(req.params.details);
         const { userId, productId, color, emiTreanure, emiPerMonth, addressId, availableLimit, totalPrice } = orderDetails;
@@ -78,9 +79,9 @@ const checkStatus = async (req, res) => {
 
     // CHECK PAYMENT TATUS
     axios.post("https://allapi.in/order/status",data).then(async (response) => {
-        console.log(1)
-        console.log(response.data)
-    if (response.data.status == true) {
+        // console.log(1)
+        // console.log(response.data)
+    if (response.data.results.status=="Success") {
         const order = await Order.create({
             productId,
             color,
@@ -108,7 +109,7 @@ const checkStatus = async (req, res) => {
     }
     })
         .catch((error) => {
-            console.error(error);
+           return console.error(error);
         });
 };
 
