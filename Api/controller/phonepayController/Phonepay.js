@@ -37,8 +37,13 @@ const newPayment = async (req, res) => {
         };
         console.log(data.callback_url)
         const response = await axios.post(`https://allapi.in/order/create`, data);
-        // console.log(response.data)
-        return res.json(response.data.results.payment_url)
+        console.log(response)
+        if(response.data.status==true){
+            return res.json(response.data.results.payment_url)
+        }else{
+            console.log(response.data)
+        }
+        
 
     } catch (error) {
         return res.status(500).json({
