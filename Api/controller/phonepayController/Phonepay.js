@@ -18,6 +18,7 @@ function generateTransactionId() {
     return TransactionId
 }
 const merchantTransactionId = generateTransactionId()
+console.log(merchantTransactionId)
 
 const newPayment = async (req, res) => {
     try {
@@ -37,11 +38,12 @@ const newPayment = async (req, res) => {
         };
         console.log(data.callback_url)
         const response = await axios.post(`https://allapi.in/order/create`, data);
-        console.log(response)
+        // console.log(response)
         if(response.data.status==true){
             return res.json(response.data.results.payment_url)
         }else{
-            console.log(response.data)
+            console.log(response.data.status)
+            return;
         }
         
 
