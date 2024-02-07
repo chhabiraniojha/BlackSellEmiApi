@@ -5,10 +5,12 @@ const sequelize=require('./utill/database');
 const User=require('./models/User')
 const Prodeuct=require('./models/Product');
 const Address=require('./models/Address');
-const Order=require('./models/Order')
+const Order=require('./models/Order');
+const Otp=require("./models/Otp")
 const userRoutes=require('./routes/userRoutes/User');
 const productRoutes=require('./routes/productRoutes/Product')
-const phonepayRoute=require('./routes/phonepayRoutes/Phonepay')
+const phonepayRoute=require('./routes/phonepayRoutes/Phonepay');
+const otpRoute=require("./routes/otpRoutes/handleOtp")
 const cors=require('cors')
 
 
@@ -22,6 +24,8 @@ app.use('/user',userRoutes)
 app.use('/',productRoutes)
 app.use("/api/phonepay",phonepayRoute)
 
+app.use("/",otpRoute)
+
 
 User.hasMany(Address)
 Address.belongsTo(User)
@@ -30,7 +34,7 @@ Address.belongsTo(User)
 User.hasMany(Order)
 Order.belongsTo(User)
 
-sequelize.sync()
+sequelize.sync({})
 .then(res=>{
     app.listen(5000)
     
